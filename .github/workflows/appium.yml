@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
     - uses: actions/checkout@v4
@@ -68,10 +68,11 @@ jobs:
     - name: Run Appium Tests in Emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 33
-        target: google_apis
+        api-level: 29
+        target: default
         arch: x86_64
-        profile: pixel_6
+        profile: pixel
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         script: |
           cd mobile-e2e-tests
           npx wdio run wdio.conf.js
