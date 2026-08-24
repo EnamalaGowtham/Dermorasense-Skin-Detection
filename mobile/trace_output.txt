@@ -1,0 +1,18 @@
+BINGO! Resolving: react-native-worklets
+Parent: C:\Users\gouth\Desktop\New version dermorasense\mobile\noop.js
+
+BINGO! Resolving: react-native-worklets
+Parent: C:\Users\gouth\Desktop\New version dermorasense\mobile\noop.js
+
+BINGO! Resolving: react-native-worklets
+Parent: C:\Users\gouth\Desktop\New version dermorasense\mobile\node_modules\babel-preset-expo\build\common.js
+
+BINGO! Resolving: react-native-worklets/plugin
+Parent: C:\Users\gouth\Desktop\New version dermorasense\mobile\node_modules\@babel\core\lib\config\files\plugins.js
+
+BINGO! Resolving: react-native-worklets/plugin
+Parent: C:\Users\gouth\Desktop\New version dermorasense\mobile\node_modules\@babel\core\lib\config\files\plugins.js
+
+BINGO! Resolving: react-native-worklets
+Parent: C:\Users\gouth\Desktop\New version dermorasense\mobile\node_modules\babel-preset-expo\build\common.js
+
