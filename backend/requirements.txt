@@ -1,0 +1,14 @@
+fastapi==0.110.0
+uvicorn[standard]==0.28.0
+python-multipart==0.0.9
+pyjwt==2.8.0
+bcrypt==4.1.2
+reportlab==4.1.0
+numpy==1.23.5
+pillow==12.2.0
+opencv-python-headless==4.11.0.86
+h5py==3.16.0
+requests==2.32.3
+httpx==0.27.0
+tensorflow
+pytest

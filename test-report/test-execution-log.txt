@@ -1,0 +1,19 @@
+============================= test session starts =============================
+platform win32 -- Python 3.10.0rc2, pytest-8.1.1, pluggy-1.6.0
+cachedir: .pytest_cache
+rootdir: C:\Users\gouth\Desktop\New version dermorasense\backend
+plugins: anyio-4.13.0, asyncio-0.23.6, cov-5.0.0
+asyncio: mode=strict
+collecting ... collected 10 items
+
+tests/test_image_quality.py::test_001_clear_valid PASSED                 [ 10%]
+tests/test_image_quality.py::test_002_dark PASSED                        [ 20%]
+tests/test_image_quality.py::test_003_extremely_dark PASSED              [ 30%]
+tests/test_image_quality.py::test_004_bright PASSED                      [ 40%]
+tests/test_image_quality.py::test_005_overexposed PASSED                 [ 50%]
+tests/test_image_quality.py::test_006_blurry PASSED                      [ 60%]
+tests/test_image_quality.py::test_007_low_contrast PASSED                [ 70%]
+tests/test_image_quality.py::test_008_low_resolution PASSED              [ 80%]
+tests/test_image_quality.py::test_009_corrupted_image PASSED             [ 90%]
+tests/test_image_quality.py::test_010_prediction_flow_gate PASSED        [100%]
+======================= 10 passed, 2 warnings in 13.74s =======================

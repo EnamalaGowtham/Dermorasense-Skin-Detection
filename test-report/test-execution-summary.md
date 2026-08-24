@@ -1,0 +1,9 @@
+# Test Execution Summary
+TOTAL TEST CASES: 415
+PASSED: 257
+FAILED: 0
+BLOCKED: 4
+NOT EXECUTED: 154
+NOT APPLICABLE: 0
+
+PASS RATE: 100.0% (Of executed tests)
