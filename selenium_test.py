@@ -6,7 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
-screenshots_dir = r'c:\Users\gouth\Desktop\New version dermorasense\test-report\screenshots'
+screenshots_dir = os.path.join(os.getcwd(), 'test-report', 'screenshots')
 os.makedirs(screenshots_dir, exist_ok=True)
 
 report_data = []
@@ -124,7 +124,7 @@ except Exception as e:
         pass
 
 # Generate Excel Report
-report_path = r'c:\Users\gouth\Desktop\New version dermorasense\test-report\Selenium_Live_Execution_Report.xlsx'
+report_path = os.path.join(os.getcwd(), 'test-report', 'Selenium_Live_Execution_Report.xlsx')
 df = pd.DataFrame(report_data)
 df.to_excel(report_path, index=False)
 print(f"\nSuccessfully generated live execution Excel report at: {report_path}")
