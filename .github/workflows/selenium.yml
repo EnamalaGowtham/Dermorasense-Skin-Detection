@@ -39,7 +39,7 @@ jobs:
       working-directory: ./backend
       run: |
         uvicorn main:app --host 0.0.0.0 --port 8000 &
-        npx wait-on tcp:8000 -t 30000
+        npx -y wait-on tcp:8000 -t 30000
 
     - name: Install Frontend Dependencies
       working-directory: ./frontend
@@ -49,7 +49,7 @@ jobs:
       working-directory: ./frontend
       run: |
         npm run dev -- --port 5173 --host &
-        npx wait-on tcp:5173 -t 30000
+        npx -y wait-on tcp:5173 -t 30000
 
     - name: Run Selenium Tests
       run: python selenium_test.py
