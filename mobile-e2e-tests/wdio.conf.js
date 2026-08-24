@@ -13,12 +13,11 @@ exports.config = {
     maxInstances: 1,
     capabilities: [{
         platformName: 'Android',
-        'appium:deviceName': 'Pixel_API_33', // Replace with user emulator name if different
+        'appium:deviceName': 'emulator-5554', // Matches the CI emulator
         'appium:automationName': 'UiAutomator2',
-        // Assuming the user runs Expo Go or a built APK
-        // 'appium:app': path.join(process.cwd(), 'app/android/app-release.apk'),
-        'appium:appPackage': 'host.exp.exponent',
-        'appium:appActivity': 'host.exp.exponent.LauncherActivity',
+        'appium:app': path.join(process.cwd(), '../mobile/android/app/build/outputs/apk/debug/app-debug.apk'),
+        'appium:appPackage': 'com.enamalagowtham.mobile',
+        'appium:appActivity': 'com.enamalagowtham.mobile.MainActivity',
         'appium:noReset': true,
         'appium:fullReset': false
     }],
