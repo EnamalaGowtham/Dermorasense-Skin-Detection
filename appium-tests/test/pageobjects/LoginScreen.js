@@ -1,8 +1,8 @@
 class LoginScreen {
-    get emailInput() { return $('~Email Input'); }
-    get passwordInput() { return $('~Password Input'); }
-    get loginButton() { return $('~Login Button'); }
-    get errorMessage() { return $('~Error Message'); }
+    get emailInput() { return $('~email-input'); }
+    get passwordInput() { return $('~password-input'); }
+    get loginButton() { return $('~login-button'); }
+    get errorMessage() { return $('~Error Message'); } // Assuming error message isn't tested yet or uses text
 
     async login(email, password) {
         await this.emailInput.waitForDisplayed({ timeout: 10000 });

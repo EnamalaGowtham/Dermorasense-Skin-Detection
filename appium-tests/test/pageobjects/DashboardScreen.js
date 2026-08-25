@@ -1,5 +1,5 @@
 class DashboardScreen {
-    get welcomeText() { return $('~Welcome Text'); }
+    get welcomeText() { return $('~welcome-text'); }
     get analyzeSkinButton() { return $('~Analyze Skin'); }
     get diseaseLibraryButton() { return $('~Disease Library'); }
 

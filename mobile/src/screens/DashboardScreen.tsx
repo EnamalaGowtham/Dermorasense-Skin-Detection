@@ -85,7 +85,7 @@ export default function DashboardScreen({ navigation }: any) {
         <View className="bg-clinical-card/80 p-6 rounded-3xl mb-6 border border-clinical-border shadow-lg overflow-hidden">
           <View className="absolute inset-0 bg-clinical-teal/5 opacity-50 z-0"></View>
           <View className="z-10 relative">
-            <Text className="text-3xl font-outfit font-bold text-white mb-2">
+            <Text testID="welcome-text" className="text-3xl font-outfit font-bold text-white mb-2">
               Welcome back, <Text className="text-clinical-teal">{user?.name?.split(' ')[0]}</Text>
             </Text>
             <Text className="text-base leading-relaxed text-clinical-slate mb-2">

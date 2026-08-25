@@ -62,6 +62,7 @@ export default function LoginScreen({ navigation }: any) {
           <View className="mb-6">
             <Text className="text-clinical-slate text-sm font-semibold mb-2 ml-1">Email Address</Text>
             <TextInput
+              testID="email-input"
               className="bg-[#0f172a] border border-clinical-border text-white px-5 py-4 rounded-xl text-base"
               placeholder="Enter your email"
               placeholderTextColor="#64748b"
@@ -76,6 +77,7 @@ export default function LoginScreen({ navigation }: any) {
             <Text className="text-clinical-slate text-sm font-semibold mb-2 ml-1">Password</Text>
             <View className="relative justify-center">
               <TextInput
+                testID="password-input"
                 className="bg-[#0f172a] border border-clinical-border text-white pl-5 pr-12 py-4 rounded-xl text-base"
                 placeholder="Enter your password"
                 placeholderTextColor="#64748b"
@@ -99,6 +101,7 @@ export default function LoginScreen({ navigation }: any) {
           </View>
 
           <TouchableOpacity 
+            testID="login-button"
             className={`w-full py-4 rounded-xl flex-row justify-center items-center ${loading ? 'bg-clinical-teal/70' : 'bg-clinical-teal'}`}
             onPress={handleLogin} 
             disabled={loading}
