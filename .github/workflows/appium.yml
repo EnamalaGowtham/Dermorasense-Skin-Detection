@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    runs-on: macos-14
+    runs-on: macos-13
     timeout-minutes: 45
 
     steps:
@@ -69,9 +69,9 @@ jobs:
     - name: Run Appium Tests in Emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 31
+        api-level: 29
         target: default
-        arch: arm64-v8a
+        arch: x86_64
         profile: pixel_2
         cores: 2
         ram-size: 4096M
@@ -85,6 +85,7 @@ jobs:
           -no-audio
           -no-boot-anim
           -no-snapshot
+          -gpu swiftshader_indirect
         script: |
           echo "Waiting for adb wait-for-device..."
           adb wait-for-device
