@@ -7,11 +7,15 @@
     "test:android": "wdio run wdio.conf.js"
   },
   "dependencies": {
-    "webdriverio": "^8.39.0",
     "@wdio/cli": "^8.39.0",
     "@wdio/local-runner": "^8.39.0",
     "@wdio/mocha-framework": "^8.39.0",
     "@wdio/spec-reporter": "^8.39.0",
-    "appium-uiautomator2-driver": "^3.7.1"
+    "appium-uiautomator2-driver": "^3.7.1",
+    "webdriverio": "^8.39.0"
+  },
+  "devDependencies": {
+    "@wdio/allure-reporter": "^9.31.2",
+    "@wdio/junit-reporter": "^9.31.2"
   }
 }
