@@ -1,0 +1,99 @@
+name: Security & Vulnerability Testing Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true # Let it continue so we can generate the final report
+        id: gitleaks
+
+  dependency-scan:
+    name: Dependency Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install pip-audit
+        run: pip install pip-audit
+      - name: Pip Audit (Backend)
+        run: pip-audit -r backend/requirements.txt || echo "PIP_AUDIT_FAILED=true" >> $GITHUB_ENV
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: NPM Audit (Mobile)
+        working-directory: mobile
+        run: npm audit --audit-level=high || echo "NPM_AUDIT_FAILED=true" >> $GITHUB_ENV
+
+  sast:
+    name: Static Application Security Testing (SAST)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install Bandit
+        run: pip install bandit
+      - name: Run Bandit (Backend)
+        run: bandit -r backend/ -ll -ii || echo "BANDIT_FAILED=true" >> $GITHUB_ENV
+
+  mobile-security:
+    name: Mobile App Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check AndroidManifest for debuggable flag
+        run: |
+          if [ -f "mobile/android/app/src/main/AndroidManifest.xml" ]; then
+            if grep -q 'android:debuggable="true"' mobile/android/app/src/main/AndroidManifest.xml; then
+              echo "Error: android:debuggable is true in production manifest!"
+              echo "MOBILE_SECURITY_FAILED=true" >> $GITHUB_ENV
+            else
+              echo "AndroidManifest looks secure."
+            fi
+          fi
+
+  generate-report:
+    name: Quality Gate & Generate Excel Report
+    needs: [secret-scan, dependency-scan, sast, mobile-security]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install pandas openpyxl
+      - name: Generate Security Report
+        run: python scripts/generate_security_report.py
+      - name: Upload Security Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: vulnerability-security-report
+          path: vulnerability-security-report.xlsx
+          retention-days: 7

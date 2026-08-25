@@ -9,7 +9,7 @@ from email.mime.multipart import MIMEMultipart
 
 from app import database
 
-JWT_SECRET = os.getenv("JWT_SECRET", "dermora_sense_ultra_secure_secret_key_2026")
+JWT_SECRET = os.getenv("JWT_SECRET", "dev_secret_key_change_in_production")
 JWT_ALGORITHM = "HS256"
 SESSION_EXPIRY_MINUTES = 120
 
