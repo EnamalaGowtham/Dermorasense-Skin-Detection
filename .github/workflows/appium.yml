@@ -72,6 +72,72 @@ jobs:
         appium --version
         appium driver list --installed
 
+    - name: Create Test Script
+      run: |
+        cat << 'EOF' > run_appium_tests.sh
+        #!/bin/bash
+        echo "Waiting for adb wait-for-device..."
+        adb wait-for-device
+        
+        echo "Waiting for sys.boot_completed..."
+        BOOT_COMPLETED=""
+        for i in $(seq 1 120); do
+            BOOT_COMPLETED=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' || true)
+            echo "Boot check $i/120: $BOOT_COMPLETED"
+            if [ "$BOOT_COMPLETED" = "1" ]; then
+                echo "Android boot completed."
+                break
+            fi
+            sleep 5
+        done
+        
+        if [ "$BOOT_COMPLETED" != "1" ]; then
+            echo "Emulator failed to boot in time."
+            adb devices -l
+            adb logcat -d -t 500 || true
+            exit 1
+        fi
+        
+        echo "Waiting for package manager..."
+        for i in $(seq 1 60); do
+            if adb shell pm path android >/dev/null 2>&1; then
+                echo "Package manager is ready."
+                break
+            fi
+            sleep 2
+        done
+        
+        echo "Disabling animations..."
+        adb shell settings put global window_animation_scale 0
+        adb shell settings put global transition_animation_scale 0
+        adb shell settings put global animator_duration_scale 0
+        
+        echo "Verifying emulator connection..."
+        adb devices
+        
+        echo "Starting Appium server..."
+        appium --address 127.0.0.1 --port 4723 --base-path /wd/hub > appium.log 2>&1 &
+        
+        echo "Waiting for Appium to start..."
+        for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:4723/wd/hub/status > /dev/null; then
+                echo "Appium server is ready."
+                break
+            fi
+            if [ $i -eq 30 ]; then
+                echo "Appium failed to start."
+                cat appium.log
+                exit 1
+            fi
+            sleep 2
+        done
+        
+        echo "Running Appium tests..."
+        cd appium-tests
+        npx wdio run wdio.conf.js
+        EOF
+        chmod +x run_appium_tests.sh
+
     - name: Run Appium Tests in Emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
@@ -92,70 +158,7 @@ jobs:
           -no-boot-anim
           -no-snapshot
           -gpu swiftshader_indirect
-        script: |
-          echo "Waiting for adb wait-for-device..."
-          adb wait-for-device
-          
-          echo "Waiting for sys.boot_completed..."
-          BOOT_COMPLETED=""
-          for i in $(seq 1 120); do
-              BOOT_COMPLETED=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r' || true)
-              echo "Boot check $i/120: $BOOT_COMPLETED"
-              if [ "$BOOT_COMPLETED" = "1" ]; then
-                  echo "Android boot completed."
-                  break
-              fi
-              sleep 5
-          done
-          
-          if [ "$BOOT_COMPLETED" != "1" ]; then
-              echo "Emulator failed to boot in time."
-              adb devices -l
-              adb shell getprop dev.bootcomplete || true
-              adb shell getprop ro.build.version.sdk || true
-              adb shell getprop ro.build.version.release || true
-              adb shell getprop | grep -E "boot|emulator|gpu" || true
-              adb logcat -d -t 500 || true
-              exit 1
-          fi
-          
-          echo "Waiting for package manager..."
-          for i in $(seq 1 60); do
-              if adb shell pm path android >/dev/null 2>&1; then
-                  echo "Package manager is ready."
-                  break
-              fi
-              sleep 2
-          done
-          
-          echo "Disabling animations..."
-          adb shell settings put global window_animation_scale 0
-          adb shell settings put global transition_animation_scale 0
-          adb shell settings put global animator_duration_scale 0
-          
-          echo "Verifying emulator connection..."
-          adb devices
-          
-          echo "Starting Appium server..."
-          appium --address 127.0.0.1 --port 4723 --base-path /wd/hub > appium.log 2>&1 &
-          
-          echo "Waiting for Appium to start..."
-          for i in $(seq 1 30); do
-              if curl -sf http://127.0.0.1:4723/wd/hub/status > /dev/null; then
-                  echo "Appium server is ready."
-                  break
-              fi
-              if [ $i -eq 30 ]; then
-                  echo "Appium failed to start."
-                  cat appium.log
-                  exit 1
-              fi
-              sleep 2
-          done
-          
-          echo "Running Appium tests..."
-          cd appium-tests
-          npx wdio run wdio.conf.js
+        script: ./run_appium_tests.sh
 
     - name: Upload Debug Artifacts
       if: always()
