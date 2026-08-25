@@ -69,8 +69,8 @@ jobs:
     - name: Run Appium Tests in Emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 34
-        target: google_apis
+        api-level: 31
+        target: default
         arch: arm64-v8a
         profile: pixel_2
         cores: 2
@@ -85,7 +85,6 @@ jobs:
           -no-audio
           -no-boot-anim
           -no-snapshot
-          -gpu swiftshader_indirect
         script: |
           echo "Waiting for adb wait-for-device..."
           adb wait-for-device
