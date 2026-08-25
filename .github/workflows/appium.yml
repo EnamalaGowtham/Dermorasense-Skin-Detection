@@ -56,7 +56,7 @@ jobs:
         ./gradlew assembleDebug
 
     - name: Install E2E Dependencies
-      working-directory: ./mobile-e2e-tests
+      working-directory: ./appium-tests
       run: npm install
 
     - name: Install Appium and UiAutomator2
@@ -148,7 +148,7 @@ jobs:
           done
           
           echo "Running Appium tests..."
-          cd mobile-e2e-tests
+          cd appium-tests
           npx wdio run wdio.conf.js
 
     - name: Upload Debug Artifacts
@@ -158,8 +158,9 @@ jobs:
         name: debug-artifacts
         path: |
           appium.log
-          mobile-e2e-tests/test-results/
-          mobile-e2e-tests/screenshots/
-          mobile-e2e-tests/videos/
-          mobile-e2e-tests/logs/
+          appium-tests/reports/
+          appium-tests/test-results/
+          appium-tests/screenshots/
+          appium-tests/videos/
+          appium-tests/logs/
         if-no-files-found: ignore
